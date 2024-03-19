@@ -37,6 +37,7 @@ FetchContent_MakeAvailable(Unity)
 #definimos codigo fuente
 file(GLOB_RECURSE SOURCES "src/*.c")
 
+#create the executable
 add_executable(${PROJECT_NAME} ${SOURCES})
 
 #Compile the libraries

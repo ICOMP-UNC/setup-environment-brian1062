@@ -10,20 +10,20 @@ runs:
           # We only make check, not changes
           DOX_CONF_FILE=$(pwd)/Doxyfile
 
-          # ToDo: Add documentation about this command and describe better
+          # Add the input to the Doxyfile
           {
               cat $DOX_CONF_FILE
               echo "INPUT" = $(pwd)/src $(pwd)/include $(pwd)/lib
           } > $DOX_CONF_FILE
 
           # Generate documentation
-          # ToDo: Add documentation about this command and describe better
+          # -c "clear" the Graphviz before running Doxygen
           sudo dot -c
 
           ERROR_FILE_FLAG=$(pwd)/dox_errors.txt
 
-          # ToDo: Add documentation and describe better this command
-          DOXYGEN_COMMAND=$(doxygen -s $DOX_CONF_FILE) > $ERROR_FILE_FLAG
+          # Run doxigen to create documentation and save the errors in a file dox_errors.txt
+          DOXYGEN_COMMAND=$(doxygen -s $DOX_CONF_FILE) 2> $ERROR_FILE_FLAG
 
           if [ -s $ERROR_FILE_FLAG ]; then
               echo "Error: There are some files that are not documented correctly"

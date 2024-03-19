@@ -13,15 +13,18 @@ runs:
 
         echo $PROJECT_PATH
 
-        # ToDo: Add documentation about 'tr' command and describe better this command
+        # 'find' command is used to find all the files with the specified extensions
+        # 'tr' command is used to replace the newline character with a space character
         SOURCE_FILES=$(find $PROJECT_PATH/src -type f \( -name "*.cpp" -or -name "*.hpp" -or -name "*.h" -or -name "*.c" \) | tr "\n" " ")
         SOURCE_FILES+=$(find $PROJECT_PATH/include -type f \( -name "*.cpp" -or -name "*.hpp" -or -name "*.h" -or -name "*.c" \) | tr "\n" " ")
         SOURCE_FILES+=$(find $PROJECT_PATH/lib -type f \( -name "*.cpp" -or -name "*.hpp" -or -name "*.h" -or -name "*.c" \) | tr "\n" " ")
 
         ERROR_FILE_FLAG=$PROJECT_PATH/clang-format_errors.txt
 
-        # ToDo: Add documentation and describe better this command
-        CLANG_COMMAND=$(clang-format -i $SOURCE_FILES) > ${ERROR_FILE_FLAG}
+        # Run clang-format check and formatted code "Style check"
+        # The -i flag is used to format the files in place
+        # The 2> operator is used to redirect the standard error to a clang-format_errors.txt
+        CLANG_COMMAND=$(clang-format -i $SOURCE_FILES) 2> ${ERROR_FILE_FLAG}
 
         echo "Running: clang-format -i $SOURCE_FILES"
 
