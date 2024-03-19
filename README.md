@@ -1,3 +1,4 @@
+[![QA Workflow](https://github.com/ICOMP-UNC/setup-environment-brian1062/actions/workflows/QAWorkflow.yml/badge.svg)](https://github.com/ICOMP-UNC/setup-environment-brian1062/actions/workflows/QAWorkflow.yml)
 # Setting up the Development Environment for Operating Systems II
 
 ## 🎯Objective
