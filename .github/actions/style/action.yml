@@ -1,0 +1,45 @@
+name: "Style check"
+description: "Style check using clang-format"
+
+runs:
+  using: "composite"
+  steps:
+    - name: "Run clang-format"
+      shell: bash
+      run: |
+        # We only make check, not changes
+        # Use the find command with the variable
+        PROJECT_PATH=$(pwd)
+
+        echo $PROJECT_PATH
+
+        # 'find' command is used to find all the files with the specified extensions
+        # 'tr' command is used to replace the newline character with a space character
+        SOURCE_FILES=$(find $PROJECT_PATH/src -type f \( -name "*.cpp" -or -name "*.hpp" -or -name "*.h" -or -name "*.c" \) | tr "\n" " ")
+        SOURCE_FILES+=$(find $PROJECT_PATH/include -type f \( -name "*.cpp" -or -name "*.hpp" -or -name "*.h" -or -name "*.c" \) | tr "\n" " ")
+        SOURCE_FILES+=$(find $PROJECT_PATH/lib -type f \( -name "*.cpp" -or -name "*.hpp" -or -name "*.h" -or -name "*.c" \) | tr "\n" " ")
+
+        ERROR_FILE_FLAG=$PROJECT_PATH/clang-format_errors.txt
+
+        # Run clang-format check and formatted code "Style check"
+        # The -i flag is used to format the files in place
+        # The 2> operator is used to redirect the standard error to a clang-format_errors.txt
+        CLANG_COMMAND=$(clang-format -i $SOURCE_FILES) 2> ${ERROR_FILE_FLAG}
+
+        echo "Running: clang-format -i $SOURCE_FILES"
+
+        if [ -s $ERROR_FILE_FLAG ]; then
+            echo "Error: There are some files that are not formatted correctly"
+            exit 1
+        else
+            echo "All files are formatted correctly. Niiiceee"
+            exit 0
+        fi
+
+    # Upload errors as an artifact, when failed
+    - uses: actions/upload-artifact@v3
+      if: failure()
+      with:
+        name: Clang-format errors!!!
+        path: $PROJECT_PATH/clang-format_errors.txt
+        retention-days: 1
